@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GUI untuk Hybrid LSB Steganography-Blockchain System
+GUI untuk Hybrid LSB Steganography-Blockchain System dengan Real Email Integration
 Penelitian: Secure Digital Communication with Integrity Verification
 
 Author: Research Team
@@ -27,6 +27,10 @@ try:
     from stego_chain.utils.lsb_steganography import LSBSteganography
     from stego_chain.core.blockchain import check_connection
     from stego_chain.utils.email_simulation import send_stego_email, get_inbox_messages
+    from stego_chain.utils.real_email_sender import (
+        send_real_email, validate_email_format, test_email_credentials, 
+        get_gmail_help, detect_email_provider
+    )
 except ImportError as e:
     print(f"Import error: {e}")
     sys.exit(1)
@@ -42,14 +46,14 @@ class SteganographyGUI:
     def setup_window(self):
         """Setup main window properties"""
         self.root.title("🔐 Hybrid LSB Steganography-Blockchain System")
-        self.root.geometry("1200x800")
+        self.root.geometry("1400x900")
         self.root.configure(bg='#f0f0f0')
         
         # Center window
         self.root.update_idletasks()
-        x = (self.root.winfo_screenwidth() // 2) - (1200 // 2)
-        y = (self.root.winfo_screenheight() // 2) - (800 // 2)
-        self.root.geometry(f"1200x800+{x}+{y}")
+        x = (self.root.winfo_screenwidth() // 2) - (1400 // 2)
+        y = (self.root.winfo_screenheight() // 2) - (900 // 2)
+        self.root.geometry(f"1400x900+{x}+{y}")
         
         # Configure style
         self.style = ttk.Style()
@@ -62,6 +66,13 @@ class SteganographyGUI:
         self.secret_message = tk.StringVar()
         self.recipient_address = tk.StringVar(value="0x50E57867322143f349d55197388Db32d1b7DB8e5")
         self.tx_hash = tk.StringVar()
+        
+        # Real email variables
+        self.sender_email = tk.StringVar()
+        self.sender_password = tk.StringVar()
+        self.recipient_email = tk.StringVar()
+        self.use_real_email = tk.BooleanVar(value=False)
+        self.email_subject = tk.StringVar(value="🔐 Secure Document - Steganography Transfer")
         
         # Image references
         self.cover_image_display = None
@@ -102,7 +113,7 @@ class SteganographyGUI:
         self.create_demo_tab()
         
     def create_send_tab(self):
-        """Create the send message tab"""
+        """Create the send message tab dengan real email support"""
         send_frame = ttk.Frame(self.notebook)
         self.notebook.add(send_frame, text="📤 Send Secret Message")
         
@@ -140,8 +151,8 @@ class SteganographyGUI:
         )
         self.message_text.pack(fill='x', pady=(0, 10))
         
-        # Recipient address
-        ttk.Label(left_panel, text="3. Recipient Address:", font=('Arial', 10, 'bold')).pack(anchor='w', pady=(0, 5))
+        # Recipient address (blockchain)
+        ttk.Label(left_panel, text="3. Blockchain Recipient Address:", font=('Arial', 10, 'bold')).pack(anchor='w', pady=(10, 5))
         
         recipient_frame = tk.Frame(left_panel)
         recipient_frame.pack(fill='x', pady=(0, 10))
@@ -149,12 +160,102 @@ class SteganographyGUI:
         ttk.Entry(
             recipient_frame, 
             textvariable=self.recipient_address,
-            font=('Arial', 9)
+            font=('Arial', 9),
+            state='readonly'
         ).pack(fill='x')
+        
+        # Add info label
+        info_label = ttk.Label(
+            left_panel, 
+            text="ℹ️ Fixed: Account1 → Account2 (for research consistency)", 
+            font=('Arial', 8), 
+            foreground='blue'
+        )
+        info_label.pack(anchor='w', pady=(0, 10))
+        
+        # Email Configuration Section (NEW!)
+        email_section = ttk.LabelFrame(left_panel, text="📧 Email Delivery Configuration", padding=10)
+        email_section.pack(fill='x', pady=(20, 10))
+        
+        # Email mode selection
+        mode_frame = tk.Frame(email_section)
+        mode_frame.pack(fill='x', pady=(0, 10))
+        
+        ttk.Radiobutton(
+            mode_frame, 
+            text="📧 Send via Real Email (Gmail/Outlook/Yahoo)", 
+            variable=self.use_real_email, 
+            value=True,
+            command=self.toggle_email_mode
+        ).pack(anchor='w', pady=2)
+        
+        ttk.Radiobutton(
+            mode_frame, 
+            text="🧪 Use Email Simulation (Testing Only)", 
+            variable=self.use_real_email, 
+            value=False,
+            command=self.toggle_email_mode
+        ).pack(anchor='w', pady=2)
+        
+        # Real email configuration frame
+        self.real_email_frame = tk.Frame(email_section)
+        self.real_email_frame.pack(fill='x', pady=10)
+        
+        # Sender email
+        sender_frame = tk.Frame(self.real_email_frame)
+        sender_frame.pack(fill='x', pady=5)
+        ttk.Label(sender_frame, text="Your Email:", font=('Arial', 9, 'bold'), width=15).pack(side='left')
+        sender_entry = ttk.Entry(sender_frame, textvariable=self.sender_email, font=('Arial', 9))
+        sender_entry.pack(side='left', fill='x', expand=True, padx=(5,5))
+        
+        # Email provider detection label
+        self.provider_label = ttk.Label(sender_frame, text="", font=('Arial', 8), foreground='blue')
+        self.provider_label.pack(side='right')
+        
+        # Bind email change to auto-detect provider
+        self.sender_email.trace('w', self.on_sender_email_change)
+        
+        # Sender password
+        password_frame = tk.Frame(self.real_email_frame)
+        password_frame.pack(fill='x', pady=5)
+        ttk.Label(password_frame, text="Password/App:", font=('Arial', 9, 'bold'), width=15).pack(side='left')
+        password_entry = ttk.Entry(password_frame, textvariable=self.sender_password, show="*", font=('Arial', 9))
+        password_entry.pack(side='left', fill='x', expand=True, padx=(5,5))
+        
+        # Help button for Gmail
+        help_btn = tk.Button(password_frame, text="❓", command=self.show_gmail_help, 
+                            bg='#3498db', fg='white', font=('Arial', 8))
+        help_btn.pack(side='right', padx=(2,0))
+        
+        # Test connection button
+        test_btn = tk.Button(password_frame, text="🔧 Test", command=self.test_email_connection,
+                            bg='#f39c12', fg='white', font=('Arial', 8))
+        test_btn.pack(side='right', padx=(2,0))
+        
+        # Recipient email
+        recipient_email_frame = tk.Frame(self.real_email_frame)
+        recipient_email_frame.pack(fill='x', pady=5)
+        ttk.Label(recipient_email_frame, text="Send To Email:", font=('Arial', 9, 'bold'), width=15).pack(side='left')
+        ttk.Entry(recipient_email_frame, textvariable=self.recipient_email, font=('Arial', 9)).pack(side='left', fill='x', expand=True, padx=(5,0))
+        
+        # Email subject
+        subject_frame = tk.Frame(self.real_email_frame)
+        subject_frame.pack(fill='x', pady=5)
+        ttk.Label(subject_frame, text="Subject:", font=('Arial', 9, 'bold'), width=15).pack(side='left')
+        ttk.Entry(subject_frame, textvariable=self.email_subject, font=('Arial', 9)).pack(side='left', fill='x', expand=True, padx=(5,0))
+        
+        # Email status indicator
+        self.email_status_frame = tk.Frame(email_section)
+        self.email_status_frame.pack(fill='x', pady=5)
+        self.email_status_label = ttk.Label(self.email_status_frame, text="", font=('Arial', 8))
+        self.email_status_label.pack()
+        
+        # Initially hide real email fields
+        self.toggle_email_mode()
         
         # Action buttons
         button_frame = tk.Frame(left_panel)
-        button_frame.pack(fill='x', pady=10)
+        button_frame.pack(fill='x', pady=20)
         
         self.send_button = tk.Button(
             button_frame,
@@ -376,7 +477,101 @@ Perfect for testing the complete system and collecting research data!"""
             fg='#ecf0f1'
         )
         self.demo_results.pack(fill='both', expand=True)
+    
+    # Email functionality methods
+    def toggle_email_mode(self):
+        """Toggle between real email and simulation mode"""
+        if self.use_real_email.get():
+            # Show real email fields
+            for widget in self.real_email_frame.winfo_children():
+                if hasattr(widget, 'pack'):
+                    widget.pack()
+            self.email_status_label.config(text="📧 Real email mode: Enter your credentials above", foreground='blue')
+        else:
+            # Hide real email fields  
+            for widget in self.real_email_frame.winfo_children():
+                if hasattr(widget, 'pack_forget'):
+                    widget.pack_forget()
+            self.email_status_label.config(text="🧪 Simulation mode: Using dummy email accounts", foreground='green')
+    
+    def on_sender_email_change(self, *args):
+        """Auto-detect email provider when sender email changes"""
+        email = self.sender_email.get()
+        if email and '@' in email:
+            try:
+                provider = detect_email_provider(email).upper()
+                self.provider_label.config(text=f"({provider})")
+            except:
+                self.provider_label.config(text="")
+        else:
+            self.provider_label.config(text="")
+    
+    def show_gmail_help(self):
+        """Show Gmail App Password setup guide"""
+        help_text = get_gmail_help()
         
+        # Create help window
+        help_window = tk.Toplevel(self.root)
+        help_window.title("📧 Gmail App Password Setup Guide")
+        help_window.geometry("600x500")
+        help_window.configure(bg='white')
+        
+        # Add scrollable text
+        text_frame = tk.Frame(help_window)
+        text_frame.pack(fill='both', expand=True, padx=10, pady=10)
+        
+        text_widget = scrolledtext.ScrolledText(text_frame, wrap=tk.WORD, font=('Arial', 10))
+        text_widget.pack(fill='both', expand=True)
+        text_widget.insert('1.0', help_text)
+        text_widget.config(state='disabled')
+        
+        # Close button
+        close_btn = tk.Button(help_window, text="Close", command=help_window.destroy,
+                             bg='#3498db', fg='white', font=('Arial', 10))
+        close_btn.pack(pady=10)
+    
+    def test_email_connection(self):
+        """Test email connection credentials"""
+        email = self.sender_email.get()
+        password = self.sender_password.get()
+        
+        if not email or not password:
+            messagebox.showwarning("Missing Info", "Please enter both email and password first!")
+            return
+        
+        self.email_status_label.config(text="🔧 Testing connection...", foreground='orange')
+        self.root.update_idletasks()
+        
+        def test_connection():
+            try:
+                result = test_email_credentials(email, password)
+                
+                def update_ui():
+                    if result['success']:
+                        self.email_status_label.config(
+                            text=f"✅ Connection successful! Provider: {result.get('provider', 'Unknown').upper()}", 
+                            foreground='green'
+                        )
+                        messagebox.showinfo("Success", result['message'])
+                    else:
+                        self.email_status_label.config(text="❌ Connection failed", foreground='red')
+                        messagebox.showerror("Connection Failed", result['error'])
+                
+                self.root.after(0, update_ui)
+                
+            except Exception as e:
+                def show_error():
+                    self.email_status_label.config(text="❌ Test failed", foreground='red')
+                    messagebox.showerror("Test Error", f"Connection test failed: {str(e)}")
+                
+                self.root.after(0, show_error)
+        
+        # Run test in background thread
+        thread = threading.Thread(target=test_connection)
+        thread.daemon = True
+        thread.start()
+        
+    # Core functionality methods
     def select_cover_image(self):
         """Open file dialog to select cover image"""
         file_path = filedialog.askopenfilename(
@@ -472,9 +667,9 @@ Perfect for testing the complete system and collecting research data!"""
         thread.start()
         
     def send_message(self):
-        """Send secret message using LSB + blockchain"""
+        """Send secret message using LSB + blockchain + real email"""
         try:
-            # Validate inputs
+            # Validate basic inputs
             if not self.cover_image_path.get():
                 messagebox.showerror("Error", "Please select a cover image!")
                 return
@@ -487,6 +682,24 @@ Perfect for testing the complete system and collecting research data!"""
             if not self.recipient_address.get():
                 messagebox.showerror("Error", "Please enter recipient address!")
                 return
+            
+            # Validate email inputs if using real email
+            if self.use_real_email.get():
+                if not self.sender_email.get() or not self.sender_password.get():
+                    messagebox.showerror("Error", "Please enter your email credentials!")
+                    return
+                    
+                if not self.recipient_email.get():
+                    messagebox.showerror("Error", "Please enter recipient email address!")
+                    return
+                
+                if not validate_email_format(self.sender_email.get()):
+                    messagebox.showerror("Error", "Invalid sender email format!")
+                    return
+                    
+                if not validate_email_format(self.recipient_email.get()):
+                    messagebox.showerror("Error", "Invalid recipient email format!")
+                    return
                 
             # Start progress
             self.send_button.config(state='disabled')
@@ -495,6 +708,11 @@ Perfect for testing the complete system and collecting research data!"""
             self.log_to_status("send", "🚀 Starting secure message transmission...")
             self.log_to_status("send", f"📁 Cover image: {os.path.basename(self.cover_image_path.get())}")
             self.log_to_status("send", f"📝 Message length: {len(message)} characters")
+            
+            if self.use_real_email.get():
+                self.log_to_status("send", f"📧 Real email: {self.sender_email.get()} → {self.recipient_email.get()}")
+            else:
+                self.log_to_status("send", "🧪 Using email simulation mode")
             
             # Send using hybrid system
             result = send_secure_message(
@@ -506,7 +724,7 @@ Perfect for testing the complete system and collecting research data!"""
             
             if result and 'success' in result and result['success']:
                 # Display results
-                self.log_to_status("send", "✅ MESSAGE SENT SUCCESSFULLY!")
+                self.log_to_status("send", "✅ LSB + BLOCKCHAIN COMPLETED!")
                 self.log_to_status("send", f"🔗 Transaction Hash: {result.get('tx_hash', 'N/A')}")
                 self.log_to_status("send", f"💾 Stego Image: {result.get('stego_path', 'stego_output.png')}")
                 
@@ -520,10 +738,56 @@ Processing Time: {metrics.get('processing_time', 0):.2f}s"""
                     
                     self.quality_text.delete('1.0', tk.END)
                     self.quality_text.insert('1.0', quality_text)
+                
+                # Send via email
+                tx_hash = result.get('tx_hash', result.get('blockchain_tx_hash'))
+                stego_path = result.get('stego_path', 'stego_output.png')
+                
+                if self.use_real_email.get():
+                    # Send via real email
+                    self.log_to_status("send", "📧 STEP 3: SENDING VIA REAL EMAIL...")
                     
+                    email_result = send_real_email(
+                        sender_email=self.sender_email.get(),
+                        sender_password=self.sender_password.get(),
+                        recipient_email=self.recipient_email.get(),
+                        stego_image_path=stego_path,
+                        tx_hash=tx_hash,
+                        message_preview=message[:50],
+                        subject=self.email_subject.get()
+                    )
+                    
+                    if email_result.get('success'):
+                        self.log_to_status("send", "✅ REAL EMAIL SENT SUCCESSFULLY!")
+                        self.log_to_status("send", f"📧 Email delivered to: {email_result['recipient']}")
+                        self.log_to_status("send", f"📎 Attachment: {email_result['attachment']}")
+                        self.log_to_status("send", f"📊 Provider: {email_result.get('provider', 'Unknown').upper()}")
+                        
+                        # Show success message
+                        messagebox.showinfo("Email Sent!", 
+                            f"✅ Secure message sent successfully!\n\n"
+                            f"📧 Email: {self.recipient_email.get()}\n"
+                            f"🔗 TX Hash: {tx_hash[:16]}...\n"
+                            f"📊 PSNR: {metrics.get('psnr', 0):.2f} dB\n\n"
+                            f"The recipient will receive the stego image via email with extraction instructions.")
+                    else:
+                        self.log_to_status("send", f"❌ EMAIL SENDING FAILED: {email_result.get('error')}")
+                        messagebox.showerror("Email Error", 
+                            f"Steganography completed but email failed:\n{email_result.get('error')}\n\n"
+                            f"You can manually send the file: {stego_path}")
+                else:
+                    # Use email simulation
+                    self.log_to_status("send", "🧪 Email simulation - file saved locally")
+                    messagebox.showinfo("Success!", 
+                        f"✅ Secure message processed successfully!\n\n"
+                        f"🔗 TX Hash: {tx_hash[:16]}...\n"
+                        f"📊 PSNR: {metrics.get('psnr', 0):.2f} dB\n"
+                        f"💾 File: {stego_path}\n\n"
+                        f"File ready for manual distribution!")
+                
                 # Display stego image
-                if os.path.exists("stego_output.png"):
-                    self.display_image("stego_output.png", self.stego_canvas)
+                if os.path.exists(stego_path):
+                    self.display_image(stego_path, self.stego_canvas)
                     
             else:
                 self.log_to_status("send", "❌ Failed to send message")
