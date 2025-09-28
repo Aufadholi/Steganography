@@ -92,7 +92,7 @@ Educational & Research Purpose
 
 ## 🤝 Kontributor
 - Mahasiswa TA Informatika
-- Supervisor: [Nama Dosen]
+- Supervisor: 
 
 ---
 **⚠️ Disclaimer**: Aplikasi ini untuk tujuan edukasi dan penelitian. Gunakan dengan bertanggung jawab.
