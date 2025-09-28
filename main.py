@@ -1,7 +1,10 @@
-from stego_chain.core import steganography
 from stego_chain.core.blockchain import check_connection
+from stego_chain.utils.hybrid_integration import HybridSteganographyBlockchain
+from stego_chain.utils.email_simulation import EmailSimulation, demo_inbox_check
 from stego_chain import config
-print(f"Mencoba terhubung dengan URL: {config.RPC_URL}")
+import os
+
+print(f"🔗 Connecting to blockchain: {config.RPC_URL}")
 
 def send_secret_message():
     """Menu untuk mengirim pesan rahasia"""

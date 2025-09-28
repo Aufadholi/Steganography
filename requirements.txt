@@ -1,3 +1,6 @@
 web3
 python-dotenv
 pycryptodome
+Pillow
+numpy
+matplotlib
