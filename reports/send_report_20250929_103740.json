@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-09-29T10:37:40.419652",
+  "process_type": "HYBRID_STEGANOGRAPHY_SEND",
+  "input": {
+    "cover_image": "D:/wallpaper/wllppr.png",
+    "message_length": 4,
+    "recipient": "0x50E57867322143f349d55197388Db32d1b7DB8e5"
+  },
+  "output": {
+    "stego_image": "output/stego_20250929_103737.png",
+    "blockchain_tx_hash": "4ecf913002bd2dea14f3c5d96bb9fda721680ad67208e0ccce1ca70726455b01",
+    "file_hash": "6beeace10350228bdb13ef224fb8cc8e81bd843f9f5e77f52650b05fb5acc78b"
+  },
+  "steganography_metrics": {
+    "mse": 6.108539094650206e-06,
+    "psnr": 100.27143003161262,
+    "ssim": 0.9999999999060586
+  },
+  "blockchain_info": {
+    "transaction_hash": "4ecf913002bd2dea14f3c5d96bb9fda721680ad67208e0ccce1ca70726455b01",
+    "explorer_url": "https://sepolia.etherscan.io/tx/4ecf913002bd2dea14f3c5d96bb9fda721680ad67208e0ccce1ca70726455b01",
+    "recipient_address": "0x50E57867322143f349d55197388Db32d1b7DB8e5"
+  },
+  "security_analysis": {
+    "pixels_modified": 95,
+    "modification_rate": 0.0006108539094650206,
+    "detectability": "Very Low",
+    "integrity_protection": "Blockchain-verified"
+  }
+}

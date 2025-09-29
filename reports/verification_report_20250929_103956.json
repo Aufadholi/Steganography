@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-09-29T10:39:56.783151",
+  "process_type": "HYBRID_STEGANOGRAPHY_RECEIVE",
+  "input": {
+    "stego_image": "C:/Users/Administrator/Downloads/stego_output.png",
+    "blockchain_tx_hash": "4ecf913002bd2dea14f3c5d96bb9fda721680ad67208e0ccce1ca70726455b01"
+  },
+  "extraction_result": {
+    "message_extracted": "halo",
+    "message_length": 4,
+    "extraction_successful": true
+  },
+  "integrity_verification": {
+    "blockchain_hash": "6beeace10350228bdb13ef224fb8cc8e81bd843f9f5e77f52650b05fb5acc78b",
+    "current_file_hash": "6beeace10350228bdb13ef224fb8cc8e81bd843f9f5e77f52650b05fb5acc78b",
+    "integrity_verified": true,
+    "verification_method": "SHA256_BLOCKCHAIN_COMPARISON"
+  },
+  "security_status": {
+    "overall_status": "SECURE",
+    "tampering_detected": false,
+    "blockchain_verified": true
+  }
+}

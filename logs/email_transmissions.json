@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": "2025-09-29T10:37:58.392834",
+    "sender_email": "aufa.fadholi@gmail.com",
+    "recipient_email": "domdomeme@gmail.com",
+    "tx_hash": "4ecf913002bd2dea14f3c5d96bb9fda721680ad67208e0ccce1ca70726455b01",
+    "stego_filename": "stego_output.png",
+    "file_size": 2250748,
+    "message_preview": "halo",
+    "provider": "gmail",
+    "blockchain_network": "Ethereum Sepolia",
+    "system_version": "Hybrid LSB Steganography-Blockchain v1.0"
+  }
+]

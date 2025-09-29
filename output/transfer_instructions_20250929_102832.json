@@ -1,0 +1,21 @@
+{
+  "sender_info": {
+    "stego_image_file": "stego_20250929_102829.png",
+    "blockchain_tx_hash": "87efe8991cc3d75ff7ca95aeffc3809e1207fe7a58c9b2fb0c46cb126954a06b",
+    "image_hash": "aaba66d074c8101030a931790eb4d1b0cfac27bc954430fab1ec46d520abc8d5",
+    "timestamp": "2025-09-29T10:28:32.389692"
+  },
+  "recipient_instructions": [
+    "1. Save gambar stego yang diterima",
+    "2. Copy transaction hash dari MetaMask atau instruksi ini",
+    "3. Jalankan aplikasi ekstraksi",
+    "4. Input path gambar dan transaction hash",
+    "5. Verifikasi integritas melalui blockchain"
+  ],
+  "security_info": {
+    "pixels_modified": 96,
+    "modification_rate": "0.001%",
+    "psnr": "100.23 dB",
+    "encrypted": false
+  }
+}
