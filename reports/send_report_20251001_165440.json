@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-10-01T16:54:40.800749",
+  "process_type": "HYBRID_STEGANOGRAPHY_SEND",
+  "input": {
+    "cover_image": "D:/wallpaper/1.png",
+    "message_length": 11,
+    "recipient": "0x50E57867322143f349d55197388Db32d1b7DB8e5"
+  },
+  "output": {
+    "stego_image": "output/stego_20251001_165438.png",
+    "blockchain_tx_hash": "02633cd14add14f785c13e992a06ad9a41fda5e2efcd6aaf4f6f2cc969b5f37b",
+    "file_hash": "2b7822e3bf8e890f08f8246fbde51b4e85057c3dcfa0a185313123c4d066e8ca"
+  },
+  "steganography_metrics": {
+    "mse": 7.973251028806584e-06,
+    "psnr": 99.11444923287874,
+    "ssim": 0.9999999998773818
+  },
+  "blockchain_info": {
+    "transaction_hash": "02633cd14add14f785c13e992a06ad9a41fda5e2efcd6aaf4f6f2cc969b5f37b",
+    "explorer_url": "https://sepolia.etherscan.io/tx/02633cd14add14f785c13e992a06ad9a41fda5e2efcd6aaf4f6f2cc969b5f37b",
+    "recipient_address": "0x50E57867322143f349d55197388Db32d1b7DB8e5"
+  },
+  "security_analysis": {
+    "pixels_modified": 124,
+    "modification_rate": 0.0007973251028806584,
+    "detectability": "Very Low",
+    "integrity_protection": "Blockchain-verified"
+  }
+}

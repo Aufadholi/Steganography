@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-10-07T11:55:38.129739",
+  "process_type": "HYBRID_STEGANOGRAPHY_SEND",
+  "input": {
+    "cover_image": "D:/wallpaper/astro2.png",
+    "message_length": 14,
+    "recipient": "0x50E57867322143f349d55197388Db32d1b7DB8e5"
+  },
+  "output": {
+    "stego_image": "output/stego_20251007_115535.png",
+    "blockchain_tx_hash": "d6c227a7d0ea13dd09765cb239b93687366282323e18adb6ee988afe67809f69",
+    "file_hash": "ce86904549a8d729580333744df1b27595f6ecb1155fc6724fdaf69680e64163"
+  },
+  "steganography_metrics": {
+    "mse": 6.177118029483305e-05,
+    "psnr": 90.22294461155022,
+    "ssim": 0.9999999990500396
+  },
+  "blockchain_info": {
+    "transaction_hash": "d6c227a7d0ea13dd09765cb239b93687366282323e18adb6ee988afe67809f69",
+    "explorer_url": "https://sepolia.etherscan.io/tx/d6c227a7d0ea13dd09765cb239b93687366282323e18adb6ee988afe67809f69",
+    "recipient_address": "0x50E57867322143f349d55197388Db32d1b7DB8e5"
+  },
+  "security_analysis": {
+    "pixels_modified": 154,
+    "modification_rate": 0.006177118029483304,
+    "detectability": "Very Low",
+    "integrity_protection": "Blockchain-verified"
+  }
+}

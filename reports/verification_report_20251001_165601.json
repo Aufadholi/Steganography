@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-10-01T16:56:01.325192",
+  "process_type": "HYBRID_STEGANOGRAPHY_RECEIVE",
+  "input": {
+    "stego_image": "C:/Users/Administrator/Downloads/stego_output (1).png",
+    "blockchain_tx_hash": "02633cd14add14f785c13e992a06ad9a41fda5e2efcd6aaf4f6f2cc969b5f37b"
+  },
+  "extraction_result": {
+    "message_extracted": "Wonderwomen",
+    "message_length": 11,
+    "extraction_successful": true
+  },
+  "integrity_verification": {
+    "blockchain_hash": "2b7822e3bf8e890f08f8246fbde51b4e85057c3dcfa0a185313123c4d066e8ca",
+    "current_file_hash": "2b7822e3bf8e890f08f8246fbde51b4e85057c3dcfa0a185313123c4d066e8ca",
+    "integrity_verified": true,
+    "verification_method": "SHA256_BLOCKCHAIN_COMPARISON"
+  },
+  "security_status": {
+    "overall_status": "SECURE",
+    "tampering_detected": false,
+    "blockchain_verified": true
+  }
+}

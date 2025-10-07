@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-10-07T11:58:07.851844",
+  "process_type": "HYBRID_STEGANOGRAPHY_RECEIVE",
+  "input": {
+    "stego_image": "C:/Users/Administrator/Downloads/stego_output1.png",
+    "blockchain_tx_hash": "d6c227a7d0ea13dd09765cb239b93687366282323e18adb6ee988afe67809f69"
+  },
+  "extraction_result": {
+    "message_extracted": "Nabil anak PKI",
+    "message_length": 14,
+    "extraction_successful": true
+  },
+  "integrity_verification": {
+    "blockchain_hash": "ce86904549a8d729580333744df1b27595f6ecb1155fc6724fdaf69680e64163",
+    "current_file_hash": "ce86904549a8d729580333744df1b27595f6ecb1155fc6724fdaf69680e64163",
+    "integrity_verified": true,
+    "verification_method": "SHA256_BLOCKCHAIN_COMPARISON"
+  },
+  "security_status": {
+    "overall_status": "SECURE",
+    "tampering_detected": false,
+    "blockchain_verified": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-10-01T16:55:05.907506",
+  "sender_email": "aufa.fadholi@gmail.com",
+  "recipient_email": "domdomeme@gmail.com",
+  "tx_hash": "02633cd14add14f785c13e992a06ad9a41fda5e2efcd6aaf4f6f2cc969b5f37b",
+  "stego_filename": "stego_output.png",
+  "file_size": 3469148,
+  "message_preview": "Wonderwomen",
+  "provider": "gmail",
+  "blockchain_network": "Ethereum Sepolia",
+  "system_version": "Hybrid LSB Steganography-Blockchain v1.0"
+}

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-10-07T11:55:48.300916",
+  "sender_email": "aufa.fadholi@gmail.com",
+  "recipient_email": "hsrbilun24@gmail.com",
+  "tx_hash": "d6c227a7d0ea13dd09765cb239b93687366282323e18adb6ee988afe67809f69",
+  "stego_filename": "stego_output.png",
+  "file_size": 1032055,
+  "message_preview": "Nabil anak PKI",
+  "provider": "gmail",
+  "blockchain_network": "Ethereum Sepolia",
+  "system_version": "Hybrid LSB Steganography-Blockchain v1.0"
+}

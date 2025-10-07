@@ -1,0 +1,36 @@
+
+=== HYBRID STEGANOGRAPHY TRANSFER INSTRUCTIONS ===
+
+UNTUK PENERIMA (0x50E57867322143f349d55197388Db32d1b7DB8e5):
+
+1. 📁 TERIMA FILE:
+   - Stego Image: stego_20251007_115535.png
+   - Ukuran: 1032055 bytes
+   
+2. 🔗 BLOCKCHAIN INFO:
+   - Transaction Hash: d6c227a7d0ea13dd09765cb239b93687366282323e18adb6ee988afe67809f69
+   - Image Hash: ce86904549a8d729...
+   - Explorer: https://sepolia.etherscan.io/tx/d6c227a7d0ea13dd09765cb239b93687366282323e18adb6ee988afe67809f69
+   
+3. 📱 METMASK CHECK:
+   - Buka MetaMask penerima  
+   - Cek Activity → ada transaksi masuk
+   - Copy transaction hash jika diperlukan
+   
+4. 🔓 EKSTRAKSI:
+   - Jalankan aplikasi steganografi
+   - Input stego image path
+   - Input transaction hash: d6c227a7d0ea13dd09765cb239b93687366282323e18adb6ee988afe67809f69
+   - Dapatkan pesan tersembunyi!
+   
+5. ✅ VERIFIKASI:
+   - System akan auto-verify integrity via blockchain
+   - Status VERIFIED = image authentic
+   - Status UNVERIFIED = possible tampering
+
+=== SECURITY METRICS ===
+- PSNR: 90.22 dB (Excellent)
+- Pixels Modified: 154 (0.006%)
+- Encryption: No
+
+Generated: 2025-10-07 11:55:38
